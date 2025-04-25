@@ -1,0 +1,33 @@
+import cv2
+import numpy as np
+import os
+
+# اسم ملف الصورة الأصلية
+input_filename = 'blurred_image.jpg'
+output_filename = 'sharpened_image.jpg'
+
+# تأكد من وجود الملف
+if not os.path.exists(input_filename):
+    print(f"الصورة '{input_filename}' غير موجودة في المجلد الحالي.")
+    exit()
+
+# تحميل الصورة
+image = cv2.imread(input_filename)
+
+# إنشاء فلتر لتحسين الحدة
+sharpen_kernel = np.array([[0, -1, 0],
+                           [-1, 5,-1],
+                           [0, -1, 0]])
+
+# تطبيق الفلتر
+sharpened = cv2.filter2D(image, -1, sharpen_kernel)
+
+# حفظ الصورة المحسنة
+cv2.imwrite(output_filename, sharpened)
+print(f"تم حفظ الصورة المحسنة باسم: {output_filename}")
+
+# عرض النتيجة (اختياري)
+cv2.imshow('Before', image)
+cv2.imshow('After', sharpened)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
